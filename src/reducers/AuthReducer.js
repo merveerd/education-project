@@ -3,12 +3,15 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   SIGN_OUT_SUCCESS,
-  UPDATE_USER_START,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAILED,
+  UPDATE_PROFILE_START,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAILED,
   REMOVE_USER_START,
   REMOVE_USER_SUCCESS,
   REMOVE_USER_FAILED,
+  GET_PERSONAL_COURSES_START,
+  GET_PERSONAL_COURSES_SUCCESS,
+  GET_PERSONAL_COURSES_FAILED,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -41,19 +44,19 @@ export default (state = INITIAL_STATE, action) => {
         user: null,
       };
 
-    case UPDATE_USER_START:
+    case UPDATE_PROFILE_START:
       return {
         ...state,
         loading: true,
       };
 
-    case UPDATE_USER_SUCCESS:
+    case UPDATE_PROFILE_SUCCESS:
       return {
         ...state,
         user: action.payload,
       };
 
-    case UPDATE_USER_FAILED:
+    case UPDATE_PROFILE_FAILED:
       return {
         ...state,
         loading: false,
@@ -77,8 +80,34 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loadingUser: false,
       };
+    case GET_PERSONAL_COURSES_START:
+      return {
+        ...state,
+        loadingUser: true,
+      };
 
+    case GET_PERSONAL_COURSES_SUCCESS:
+      let updatedUser = {...state.user};
+      updatedUser.courses = action.payload; //suppose to get these courses in login request
+      return {
+        ...state,
+        loadingUser: false,
+        user: updatedUser,
+      };
+
+    case GET_PERSONAL_COURSES_FAILED:
+      return {
+        ...state,
+        loadingUser: false,
+      };
     default:
       return state;
+  }
+};
+export const getPersonalCourseCount = state => {
+  if (state.user.courses) {
+    return state.user.courses.length;
+  } else {
+    return 0;
   }
 };

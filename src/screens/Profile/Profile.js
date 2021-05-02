@@ -9,18 +9,19 @@ import {
 } from 'react-native';
 import {Header} from '../../components';
 import {connect} from 'react-redux';
-import {fonts, colors, appName} from '../../style';
-import ImagePicker from 'react-native-image-picker';
+import {fonts, colors} from '../../style';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {getStudentGroup, updateUserProfile} from '../../actions';
 
+const dummyProfileImage = require('../../assets/dummy.png');
 const Profile = props => {
-  const [image, setImage] = useState(props.user.image);
+  const [image, setImage] = useState('');
 
   useEffect(() => {
-    // if (props.studentGroup.length === 0) {
-    //   props.getStudentGroup(props.user);
-    // }
-  }, []);
+    if (props.user.image) {
+      setImage(props.user.image);
+    }
+  }, [props.user]);
 
   return (
     <SafeAreaView>
@@ -32,15 +33,13 @@ const Profile = props => {
           <TouchableOpacity
             onPress={() => {
               const options = {
+                noData: true,
                 title: 'Resim Seç',
                 quality: 0.2,
-                storageOptions: {
-                  skipBackup: true,
-                  path: 'images',
-                },
+                mediaType: 'photo',
               };
 
-              ImagePicker.showImagePicker(options, response => {
+              launchImageLibrary(options, response => {
                 if (response.didCancel) {
                   console.log('User cancelled image picker');
                 } else if (response.error) {
@@ -58,11 +57,11 @@ const Profile = props => {
                 }
               });
             }}>
-            <Image
-              style={styles.avatar}
-              defaultSource={require('../../assets/dummy.png')}
-              source={{uri: image}}
-            />
+            {image ? (
+              <Image style={styles.avatar} source={{uri: image}}></Image>
+            ) : (
+              <Image style={styles.avatar} source={dummyProfileImage} />
+            )}
           </TouchableOpacity>
           <View style={styles.info}>
             <Text style={styles.text}>{props.user.username} </Text>
@@ -71,26 +70,8 @@ const Profile = props => {
                 props.navigation.navigate('Reports');
               }}
               style={[styles.text, {color: colors.blue}]}>
-              {props.studentGroup.length}
-              {props.studentGroup.length === 0 ||
-              props.studentGroup.length === 1 ? (
-                <Text> student group! </Text>
-              ) : (
-                <Text> student groups! </Text>
-              )}
+              See the report
             </Text>
-          </View>
-
-          <View style={styles.body}>
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('Search');
-              }}
-              style={styles.buttonContainer}>
-              <Text style={{color: 'white'}}>
-                Find your students to create your group!
-              </Text>
-            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -130,23 +111,6 @@ const styles = StyleSheet.create({
   info: {
     padding: 10,
     alignItems: 'center',
-  },
-  body: {
-    marginTop: 40,
-    padding: 30,
-    alignItems: 'center',
-  },
-
-  buttonContainer: {
-    marginTop: 10,
-    height: 45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    width: 250,
-    borderRadius: 30,
-    backgroundColor: colors.somon,
   },
 });
 

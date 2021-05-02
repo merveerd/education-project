@@ -1,6 +1,6 @@
 const axios = require('axios');
 import AsyncStorage from '@react-native-community/async-storage';
-//import * as Keychain from "react-native-keychain";
+//import * as Keychain from "react-native-keychain"; //would be more safer
 import {LOCAL_AUTH_ID} from '../actions/types';
 
 export const get = async (requestMethod, callbackFn, dispatch) => {
@@ -19,8 +19,9 @@ export const get = async (requestMethod, callbackFn, dispatch) => {
       callbackFn(response, dispatch);
     })
     .catch(e => {
-      console.log('eeee EEEE', e);
-      console.log(e.response.data.message);
+      e.response
+        ? console.log(e.response.data.message)
+        : console.log('server is not responding', e);
       callbackFn(e, dispatch);
     });
 };

@@ -4,26 +4,25 @@ import {StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import {colors} from '../style';
 const SearchList = props => {
   return (
-    <Text>Search List</Text>
-    // <FlatList
-    //   data={props.searchResults}
-    //   extraData={true}
-    //   renderItem={({item}) => (
-    //     <TouchableOpacity
-    //       style={styles.touchable}
-    //       onPress={() => {
-    //         props.onPress(item);
-    //       }}>
-    //       <Thumbnail
-    //         source={
-    //           item[props.source]
-    //             ? item[props.source]
-    //             : require("../assets/dummy.png") //it is for user search
-    //         }></Thumbnail>
-    //       <Text style={styles.text}>{item[props.text]}</Text>
-    //     </TouchableOpacity>
-    //   )}
-    //   keyExtractor={(item, index) => `${index}`}></FlatList>
+    <FlatList
+      data={props.searchResults}
+      extraData={true}
+      renderItem={({item}) => (
+        <TouchableOpacity
+          style={styles.touchable}
+          onPress={() => {
+            props.onPress(item);
+          }}>
+          <Thumbnail
+            source={
+              item[props.source]
+                ? item[props.source]
+                : require('../assets/dummy.png') //it is for user search
+            }></Thumbnail>
+          <Text style={styles.text}>{item[props.text]}</Text>
+        </TouchableOpacity>
+      )}
+      keyExtractor={(item, index) => `${index}`}></FlatList>
   );
 };
 

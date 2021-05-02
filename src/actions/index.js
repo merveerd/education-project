@@ -1,4 +1,4 @@
 export * from './AuthActions';
-export * from './StudentGroupActions';
-export * from './UserActions';
-export * from './ActiveCourseActions';
+export * from './StudentGroupActions'; //by student or teacher depends on the action
+export * from './UserActions'; //ALL BY ONLY ADMIN
+export * from './ActiveCourseActions'; //ALL BY ONLY ADMIN

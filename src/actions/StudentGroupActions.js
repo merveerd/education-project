@@ -12,17 +12,16 @@ import {
 import {Alert} from 'react-native';
 import {post, get, patch} from '../helpers/APIService';
 import * as RootNavigation from '../RootNavigation';
-
-const respondCreateStudentGroup = (response, status, dispatch) => {
-  if (status) {
-    Alert.alert('Good!', 'You have started something!');
+//Needs to be all checked, they are all here for reference
+const respondCreateStudentGroup = (response, dispatch) => {
+  if (response.status < 400) {
+    Alert.alert('Done!', "You've created a class");
     let newGroup = {...response.data};
     dispatch({
       type: GROUP_ADD_SUCCESS,
       payload: newGroup,
     });
   } else {
-    console.log('Student group has not been added: ', err);
     dispatch({
       type: GROUP_ADD_FAILED,
     });
@@ -31,7 +30,6 @@ const respondCreateStudentGroup = (response, status, dispatch) => {
 export const createStudentGroup = params => {
   return dispatch => {
     dispatch({type: GROUP_GET_START});
-    //add in
     post(
       BASE_URL.concat('/group'),
       respondCreateStudentGroup,
@@ -41,8 +39,8 @@ export const createStudentGroup = params => {
   };
 };
 
-const respondGetStudentGroup = (response, status, dispatch) => {
-  if (status) {
+const respondGetStudentGroup = (response, dispatch) => {
+  if (response.status < 400) {
     dispatch({
       type: GROUP_GET_SUCCESS,
       payload: response.data,
@@ -53,26 +51,25 @@ const respondGetStudentGroup = (response, status, dispatch) => {
     });
   }
 };
-export const getStudentGroup = param => {
+export const getStudentGroup = groupId => {
   return dispatch => {
     dispatch({type: GROUP_GET_START});
-    //param should contain groupIds of the user in array format
-    get(BASE_URL.concat(`/group`), respondGetStudentGroup, dispatch, param);
+    get(BASE_URL.concat(`/group/${groupId}`), respondGetStudentGroup, dispatch);
   };
 };
-const respondUpdateStudentGroup = (response, status, dispatch) => {
-  if (status) {
+const respondUpdateStudentGroup = (response, dispatch) => {
+  if (response.status < 400) {
     dispatch({
       type: GROUP_UPDATE_SUCCESS,
       payload: response.data,
     });
 
     Alert.alert(
-      'Good!',
-      'You added your Student to the Group!',
+      'Done!',
+      "You've added the student to the class!",
       [
         {
-          text: 'Nice',
+          text: 'Done',
           onPress: () => RootNavigation.pop(),
         },
       ],
@@ -84,16 +81,14 @@ const respondUpdateStudentGroup = (response, status, dispatch) => {
     dispatch({
       type: GROUP_UPDATE_FAILED,
     });
-    console.log('Error on updateStudentGroup: ', response);
   }
 };
 
-export const updateStudentGroup = param => {
-  //param should contain Studentgroup id
+export const updateStudentGroup = groupId => {
   return dispatch => {
     dispatch({type: GROUP_GET_START});
     patch(
-      BASE_URL.concat(`/group/${param.id}`),
+      BASE_URL.concat(`/group/${groupId}`),
       respondUpdateStudentGroup,
       dispatch,
       param,

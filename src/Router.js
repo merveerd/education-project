@@ -16,7 +16,6 @@ import SignUp from './screens/Auth/SignUp';
 import Menu from './screens/Menu/Menu';
 
 import Home from './screens/Home/Home';
-import Admin from './screens/Home/Admin';
 
 import Profile from './screens/Profile/Profile';
 
@@ -29,7 +28,7 @@ import Search from './screens/Search/Search';
 import Settings from './screens/Settings/Settings';
 
 import {navigationRef} from './RootNavigation';
-import {colors, fonts} from './style';
+import {colors} from './style';
 
 const menu = navigation => {
   return (
@@ -108,12 +107,12 @@ const HomeStackScreen = () => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  co43ejuknsole.log('home right top');
+                  navigation.navigate('Settings');
                 }}>
                 <Icon
                   style={{color: colors.blue, marginRight: 10}}
-                  type="FontAwesome"
-                  name="envelope"></Icon>
+                  type="Feather"
+                  name="settings"></Icon>
               </TouchableOpacity>
             );
           },
@@ -155,29 +154,13 @@ const SearchStackScreen = () => {
         name="Search"
         component={Search}
         options={({navigation, route}) => ({
-          headerLeft: () => menu(navigation),
+          headerShown: false,
         })}
       />
       <SearchStack.Screen name="UserDetails" component={UserDetails} />
     </SearchStack.Navigator>
   );
 };
-
-// const AdminStack = createStackNavigator();
-// const AdminStackScreen = () => {
-//   return (
-//     <AdminStack.Navigator>
-//       <AdminStack.Screen
-//         name="Admin"
-//         component={Admin}
-//         options={({navigation, route}) => ({
-//           headerLeft: () => menu(navigation),
-//         })}
-//       />
-//       <AdminStack.Screen name="UserDetails" component={UserDetails} />
-//     </AdminStack.Navigator>
-//   );
-// };
 
 const TabStack = createBottomTabNavigator();
 
@@ -209,13 +192,8 @@ const TabStackScreen = props => {
       tabBarOptions={{
         inactiveTintColor: colors.blue,
         activeTintColor: colors.somon,
-        //  showLabel: false,
       }}>
-      <TabStack.Screen
-        // unmountOnBlur={true}
-        name="Home"
-        component={HomeStackScreen}
-      />
+      <TabStack.Screen name="Home" component={HomeStackScreen} />
       <TabStack.Screen name="Courses" component={Courses} />
       <TabStack.Screen
         name="Reports"
@@ -230,10 +208,10 @@ const TabStackScreen = props => {
 
 const DrawerStack = createDrawerNavigator();
 const DrawerStackScreen = props => {
-  let name = props.route.params.name;
+  let user = props.route.params;
   return (
     <DrawerStack.Navigator
-      drawerContent={props => <Menu {...props} name={name} />}
+      drawerContent={props => <Menu {...props} user={user} />}
       drawerType="slide"
       drawerStyle={{
         width: '75%',
@@ -246,7 +224,7 @@ const DrawerStackScreen = props => {
 const RootStack = createStackNavigator();
 function Router(props) {
   const {user} = props;
-  //orientation add
+
   return (
     <NavigationContainer ref={navigationRef}>
       <RootStack.Navigator headerMode="none" mode="modal">
@@ -287,6 +265,13 @@ function Router(props) {
             <RootStack.Screen
               name="Settings"
               component={SettingsStackScreen}
+              options={{
+                animationEnabled: false,
+              }}
+            />
+            <RootStack.Screen
+              name="Search"
+              component={SearchStackScreen}
               options={{
                 animationEnabled: false,
               }}

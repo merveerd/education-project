@@ -15,12 +15,12 @@ const Header = props => {
       </View>
       <TouchableOpacity
         onPress={() => {
-          console.log('onpressed');
+          RootNavigation.navigate('Settings');
         }}>
         <Icon
           style={{color: colors.blue}}
-          type="FontAwesome"
-          name="envelope"></Icon>
+          type="Feather"
+          name="settings"></Icon>
       </TouchableOpacity>
     </View>
   );

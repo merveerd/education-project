@@ -5,10 +5,13 @@ import {
   LOGIN_START,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
+  GET_PERSONAL_COURSES_START,
+  GET_PERSONAL_COURSES_SUCCESS,
+  GET_PERSONAL_COURSES_FAILED,
   SIGN_OUT_SUCCESS,
-  UPDATE_USER_START,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAILED,
+  UPDATE_PROFILE_START,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAILED,
   RESET_GROUP,
   BASE_URL,
   LOCAL_AUTH_ID,
@@ -90,35 +93,54 @@ export const login = params => {
 const respondUpdateUser = (response, dispatch) => {
   if (response.status < 400) {
     dispatch({
-      type: UPDATE_USER_SUCCESS,
-      payload: response.data,
+      type: UPDATE_PROFILE_SUCCESS,
+      payload: response.data, //there is no image field in user model yet, needs to be recorded somewhere in firebase, s3 etc
     });
 
     Alert.alert('updated', 'Your profile image is updated!');
   } else {
-    console.log(
-      'post error respondUpdateUser: => ',
-      response.response.data.message,
-    );
     Alert.alert('WARNING', "User coudn't get updated!");
-    dispatch({type: UPDATE_USER_FAILED});
+    dispatch({type: UPDATE_PROFILE_FAILED});
   }
 };
 
 export const updateUserProfile = params => {
   return dispatch => {
-    dispatch({type: UPDATE_USER_START});
-    if (params.image) {
-      let userId = params.id;
-      patch(
-        BASE_URL.concat(`/user/${userId}`),
-        respondUpdateUser,
-        dispatch,
-        params,
-      );
-    }
+    dispatch({type: UPDATE_PROFILE_START});
+
+    let userId = params.id;
+    patch(
+      BASE_URL.concat(`/user/${userId}`),
+      respondUpdateUser,
+      dispatch,
+      params,
+    );
   };
 };
+
+const respondGetPersonalCourses = (response, dispatch) => {
+  if (response.status < 400) {
+    console.log('courses', response.data.data);
+    dispatch({
+      type: GET_PERSONAL_COURSES_SUCCESS,
+      payload: response.data.data, //there is no image field in user model yet, needs to be recorded somewhere in firebase, s3 etc
+    });
+  } else {
+    dispatch({type: GET_PERSONAL_COURSES_FAILED});
+  }
+};
+
+export const getPersonalCourses = userId => {
+  return dispatch => {
+    dispatch({type: GET_PERSONAL_COURSES_START});
+    get(
+      BASE_URL.concat(`/usercourse/user/${userId}`),
+      respondGetPersonalCourses,
+      dispatch,
+    );
+  };
+};
+
 const getUser = (response, dispatch) => {
   if (response.status < 400) {
     response.data.user.role = response.data.role ? response.data.role : null;
@@ -145,8 +167,6 @@ export const signOut = () => {
     dispatch({type: SIGN_OUT_SUCCESS});
     // dispatch({type: RESET_USERS});
     dispatch({type: RESET_GROUP});
-
-    //  RootNavigation.replace('Entrance');
   };
 };
 

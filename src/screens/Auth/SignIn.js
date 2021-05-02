@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState} from 'react';
 
 import {
   Text,
@@ -32,13 +32,9 @@ const SignIn = props => {
             borderRadius: 20,
           }}>
           <BackButton onPress={props.navigation.goBack} />
-          {/* Logo  */}
-
           <View style={styles.headerView}>
             <Text style={appName}>Learning Center</Text>
           </View>
-
-          {/* Form Kısmı (Buttona kadar)  */}
 
           <View style={styles.formView}>
             <Input
@@ -107,10 +103,9 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '85%',
+    height: '10%',
   },
   textStyle: {
-    //Button Text
-
     letterSpacing: 2,
   },
   footerView: {

@@ -1,11 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 
 import {
   View,
   Text,
-  TouchableOpacity,
   SafeAreaView,
-  Platform,
   StyleSheet,
   StatusBar,
   ActivityIndicator,
@@ -13,8 +11,6 @@ import {
 } from 'react-native';
 
 import {connect} from 'react-redux';
-import {Icon} from 'native-base';
-
 import {colors, fonts, appName} from '../../style';
 import {isUser} from '../../actions';
 
@@ -50,14 +46,14 @@ const Entrance = props => {
       </View>
       <View style={styles.footerView}>
         <Text
-          style={styles.blueText}
+          style={styles.whiteText}
           onPress={() => {
             props.navigation.navigate('SignIn');
           }}>
           Login
         </Text>
         <Text
-          style={styles.blueText}
+          style={styles.whiteText}
           onPress={() => {
             props.navigation.navigate('SignUp');
           }}>
@@ -82,8 +78,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue,
   },
   logo: {
-    width: '52%',
-    height: '70%',
+    width: '68%',
+    height: '76%',
   },
   bodyView: {
     flex: 3,
@@ -105,15 +101,9 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: 'white',
-    fontStyle: 'italic',
-    fontSize: fonts.small,
-  },
-  blueText: {
-    color: colors.blue,
 
-    marginLeft: 8,
     fontSize: fonts.medium,
-    fontWeight: 'bold',
+    margin: '10%',
   },
 });
 

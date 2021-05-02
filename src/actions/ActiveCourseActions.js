@@ -8,8 +8,7 @@ import {
 import {get} from '../helpers/APIService';
 
 export const respondGetUserCourses = (response, dispatch) => {
-  if (response.status < 300) {
-  
+  if (response.status < 400) {
     dispatch({
       type: GET_ACTIVE_COURSES_SUCCESS,
       payload: response.data.data,

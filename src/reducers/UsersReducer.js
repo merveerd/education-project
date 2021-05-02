@@ -2,6 +2,9 @@ import {
   GET_USERS_START,
   GET_USERS_SUCCESS,
   GET_USERS_FAILED,
+  GET_USER_COUNT_START,
+  GET_USER_COUNT_SUCCESS,
+  GET_USER_COUNT_FAILED,
   UPDATE_USER_START,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILED,
@@ -10,9 +13,11 @@ import {
   DELETE_USER_FAILED,
 } from '../actions/types';
 
+//Only Admin
 const INITIAL_STATE = {
   loading: false,
   users: [],
+  userCount: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -36,6 +41,25 @@ export default (state = INITIAL_STATE, action) => {
         loading: false,
       };
 
+    case GET_USER_COUNT_START:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case GET_USER_COUNT_SUCCESS:
+      return {
+        ...state,
+        userCount: action.payload,
+        loading: false,
+      };
+
+    case GET_USER_COUNT_FAILED:
+      return {
+        ...state,
+        loading: false,
+      };
+
     case UPDATE_USER_START:
       return {
         ...state,
@@ -48,7 +72,8 @@ export default (state = INITIAL_STATE, action) => {
       const updateIndex = state.users.findIndex(
         student => student.id === action.payload.id,
       );
-      updatedUsers.splice(updateIndex, 1, updatedUser);
+      (updateIndex === 0 || updateIndex) &&
+        updatedUsers.splice(updateIndex, 1, updatedUser);
       return {
         //Find index and update it
         ...state,

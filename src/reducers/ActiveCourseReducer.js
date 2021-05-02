@@ -6,7 +6,7 @@ import {
 } from '../actions/types';
 //ONLY ADMIN
 const INITIAL_STATE = {
-  activeCourses: [],
+  activeCourses: [], //keeping all the active courses isnt scalable so that all counts related to the active courses should be handled by server side
   loadingActiveCourses: false,
 };
 export default (state = INITIAL_STATE, action) => {
@@ -38,7 +38,7 @@ export default (state = INITIAL_STATE, action) => {
 
 const getActiveCourses = state => state.activeCourses;
 
-//this counts can be directly kept somewhere in database too instead of this calculations. They are only to see what choices are users make
+//this counts should be directly retrieved from server instead of these calculations. They are only to see what choices are users make
 
 export const typeRatios = createSelector([getActiveCourses], activeCourses => {
   let listening = 0,
@@ -78,7 +78,6 @@ export const contentRatios = createSelector(
   activeCourses => {
     let word = 0,
       grammar = 0;
-    console.log('cont', activeCourses);
     activeCourses.forEach(item => {
       switch (item['courses.content']) {
         case 'word':
@@ -106,9 +105,7 @@ export const levelCount = createSelector([getActiveCourses], activeCourses => {
     C1: 1,
     C2: 1,
   };
-  console.log(activeCourses);
   activeCourses.forEach(item => {
-    console.log('for');
     levels[item['courses.level'].toUpperCase()] =
       levels[item['courses.level'].toUpperCase()] + 1 || 0;
   });

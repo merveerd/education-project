@@ -36,34 +36,30 @@ const Menu = props => {
           onPress={() => {
             props.navigation.navigate('Profile');
           }}>
-          {props.profile_image ? (
+          {props.user.profile_image ? (
             <Image source={{uri: ''}} style={styles.profilePhoto} />
           ) : (
             <View style={styles.IconView}>
               <Icon name={'user-circle'} size={40} color="white" />
             </View>
           )}
-          <Text style={styles.nameText}>{props.name}</Text>
+          <Text style={styles.nameText}>{props.user.username}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.sectionView}>
         <ScrollView>
-          <View style={styles.sections}>
-            {/* {sections('map-pin', 'Content Options', () => {
-              props.navigation.navigate('ContentOptions');
-            })}
-            {sections('smile-o', 'Student Groups', () => {
-              props.navigation.navigate('studentGroup');
-            })} */}
-
-            {sections('address-book', 'Create a New Student Group', () => {
-              props.navigation.navigate('Search');
-            })}
-          </View>
+          {props.user.role === 'admin' && (
+            <View style={styles.sections}>
+              {sections('address-book', 'Find Users', () => {
+                props.navigation.navigate('Search');
+              })}
+            </View>
+          )}
 
           <View style={styles.sections}>
             <View style={styles.line} />
             {sections('pencil', 'Settings', () => {
+              //same icon should be at header since they are for the same page
               props.navigation.navigate('Settings');
             })}
           </View>

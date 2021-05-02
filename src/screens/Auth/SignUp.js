@@ -26,13 +26,10 @@ const SignUp = props => {
         <KeyboardAvoidingView
           behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
           style={{flex: 1, backgroundColor: 'white', borderRadius: 20}}>
-          {/* Header  */}
           <BackButton onPress={props.navigation.goBack} />
           <View style={styles.headerView}>
             <Text style={appName}>Learning Center</Text>
           </View>
-
-          {/* Form  */}
 
           <View style={styles.formView}>
             <Input
@@ -64,8 +61,6 @@ const SignUp = props => {
               style={styles.button}
             />
           </View>
-
-          {/* Footer  */}
 
           <View style={styles.footerView}>
             <View style={styles.footerContent}>
@@ -122,6 +117,7 @@ const styles = StyleSheet.create({
 
   button: {
     width: '85%',
+    height: '10%',
   },
   textStyle: {
     fontSize: fonts.small,

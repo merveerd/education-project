@@ -12,8 +12,8 @@ const Button = props => (
         backgroundColor: colors.blue,
         borderColor: colors.blue,
         width: '30%',
-        height: '20%',
-
+        height: '40%',
+        marginTop: '5%',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 40,

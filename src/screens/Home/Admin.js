@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 import {
   View,
@@ -16,15 +16,24 @@ import {
   contentRatios,
   levelCount,
 } from '../../reducers/ActiveCourseReducer';
-import {getUserCoursesByType} from '../../actions';
+import {getUserCoursesByType, getUserCount} from '../../actions';
 import {colors, fonts} from '../../style';
 import {Button} from '../../components';
+import * as RootNavigation from '../../RootNavigation';
 const Admin = props => {
   useEffect(() => {
     if (props.activeCourses.length === 0) {
       props.getUserCoursesByType();
     }
+
+    if (props.userCount === 0) {
+      props.getUserCount();
+    }
   }, []);
+
+  const showSearch = () => {
+    RootNavigation.navigate('Search');
+  };
 
   const {typeRatios, contentRatios, levelCount} = props;
 
@@ -92,18 +101,33 @@ const Admin = props => {
   return (
     <SafeAreaView>
       <StatusBar backgroundColor={colors.blue} />
-      <View style={styles.container}>
-        <Text>Total User Number</Text>
-        <Button text="Filter Users" />
-      </View>
+
       <ScrollView>
+        <View style={styles.infoWrapper}>
+          <Text style={styles.info}>
+            <Text style={styles.amount}>{props.userCount}</Text>
+            Total Users
+          </Text>
+          <Button
+            style={styles.button}
+            text="Search Users"
+            onPress={showSearch}
+          />
+          <Text style={styles.info}>
+            <Text style={styles.amount}>
+              {props.activeCourses && props.activeCourses.length}
+            </Text>
+            Active Courses
+          </Text>
+        </View>
         <View style={styles.container}>
-          <Text style={styles.title}>What mostly used</Text>
+          <Text style={styles.title}>
+            What mostly used based on active courses
+          </Text>
 
           <>
             <Text style={styles.subtitle}>Which skill</Text>
             <BarChart
-              style={styles.barChart}
               data={typeData}
               width={screenWidth * 0.95}
               height={screenHeight / 3}
@@ -123,7 +147,6 @@ const Admin = props => {
             />
             <Text style={styles.subtitle}>Which language level</Text>
             <StackedBarChart
-              style={styles.barChart}
               data={levelData}
               width={screenWidth * 0.95}
               height={420}
@@ -142,33 +165,57 @@ const styles = StyleSheet.create({
     fontSize: fonts.medium,
     letterSpacing: 3,
     color: colors.blue,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   subtitle: {
     marginTop: '5%',
+    marginBottom: '1%',
     fontSize: fonts.small,
     letterSpacing: 3,
     color: colors.blue,
+  },
+  info: {
+    fontSize: fonts.small,
+    letterSpacing: 3,
+    color: colors.blue,
+  },
+  amount: {
+    letterSpacing: 6,
+    fontSize: fonts.big,
+    fontWeight: 'bold',
+  },
+  infoWrapper: {
+    marginBottom: '10%',
+    marginTop: '5%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  barChart: {},
+
   button: {
-    width: '85%',
+    width: '50%',
+    marginBottom: '10%',
   },
 });
 
 const mapStateToProps = ({
   authResponse,
+  usersResponse,
   studentGroupResponse,
   activeCourseResponse,
 }) => {
   const {user} = authResponse;
+  const {userCount} = usersResponse;
   const {studentGroup} = studentGroupResponse;
   const {activeCourses} = activeCourseResponse;
   return {
     user,
+    userCount,
     studentGroup,
     activeCourses,
     typeRatios: typeRatios(activeCourseResponse),
@@ -179,4 +226,5 @@ const mapStateToProps = ({
 
 export default connect(mapStateToProps, {
   getUserCoursesByType,
+  getUserCount,
 })(Admin);

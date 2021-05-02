@@ -10,7 +10,7 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  studentGroup: [], //if the user is student, his/her class
+  studentGroup: [], //if the user is student or teacher, his/her class
   loadingStudentGroup: false,
 };
 export default (state = INITIAL_STATE, action) => {
