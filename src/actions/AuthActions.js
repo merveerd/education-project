@@ -120,7 +120,6 @@ export const updateUserProfile = params => {
 
 const respondGetPersonalCourses = (response, dispatch) => {
   if (response.status < 400) {
-    console.log('courses', response.data.data);
     dispatch({
       type: GET_PERSONAL_COURSES_SUCCESS,
       payload: response.data.data, //there is no image field in user model yet, needs to be recorded somewhere in firebase, s3 etc

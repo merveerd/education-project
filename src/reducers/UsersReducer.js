@@ -68,6 +68,7 @@ export default (state = INITIAL_STATE, action) => {
 
     case UPDATE_USER_SUCCESS:
       const updatedUser = action.payload;
+
       let updatedUsers = state.users.slice();
       const updateIndex = state.users.findIndex(
         student => student.id === action.payload.id,
@@ -77,7 +78,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         //Find index and update it
         ...state,
-        users: updatedUsers,
+        users: [...updatedUsers],
         loading: false,
       };
 
@@ -94,10 +95,10 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case DELETE_USER_SUCCESS:
+      //since the results will be updated in any case, no need to remove user users array in state
       return {
         ...state,
         loadingUser: false,
-        users: [...action.payload],
       };
 
     case DELETE_USER_FAILED:

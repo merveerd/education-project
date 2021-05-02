@@ -77,7 +77,6 @@ export const patch = async (
       callbackFn(response, dispatch);
     })
     .catch(e => {
-      console.log(e.response.data.message);
       callbackFn(e, dispatch);
     });
 };
@@ -101,7 +100,6 @@ export const deleteOne = async (
       callbackFn(response, dispatch);
     })
     .catch(e => {
-      console.log(e.response.data.message);
       callbackFn(e, dispatch);
     });
 };

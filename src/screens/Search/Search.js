@@ -20,6 +20,7 @@ const Search = props => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]); //can be suburb too depends on the country.
 
+  const [removeResults, setRemoveResults] = useState(false);
   useEffect(() => {
     //set country
     let formattedCountries = [];
@@ -66,10 +67,12 @@ const Search = props => {
   useEffect(() => {
     if (selectedCity) {
       props.getUsersByLocation(selectedCity);
+      setRemoveResults(false);
     }
   }, [selectedCity]);
 
   const selectUser = item => {
+    setRemoveResults(true);
     RootNavigation.navigate('UserDetails', item);
   };
 
@@ -128,7 +131,7 @@ const Search = props => {
           />
         )}
 
-        {props.users.length > 0 && (
+        {props.users.length > 0 && !removeResults && (
           <SearchList
             searchResults={props.users}
             text="username"
